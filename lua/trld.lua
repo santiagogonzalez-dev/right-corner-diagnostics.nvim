@@ -2,11 +2,11 @@
 -- Last Change:	2022 Apr 23
 -- Author:	Mofiqul Islam <mofi0islam@gmail.com>
 -- Licence:	MIT
-local c = require 'trld.config'
-local u = require 'trld.utils'
+local config = require 'trld.config'
+local utils = require 'trld.utils'
 local M = {}
 
-function TRLDShow(opts, bufnr, line_nr, client_id)
+function M.show(opts, bufnr, line_nr)
    bufnr = bufnr or 0
    line_nr = line_nr or (vim.api.nvim_win_get_cursor(0)[1] - 1)
    opts = opts or { ['lnum'] = line_nr }
@@ -31,10 +31,10 @@ function TRLDShow(opts, bufnr, line_nr, client_id)
    diag_ns.user_data.diags = true
    diag_ns.user_data.last_line_nr = line_nr
 
-   u.display_diagnostics(line_diags, bufnr, ns, c.config.position)
+   utils.display_diagnostics(line_diags, bufnr, ns, config.config.position)
 end
 
-function TRLDHide(opts, bufnr, line_nr, client_id)
+function M.hide(bufnr)
    bufnr = bufnr or 0
    local namespace = vim.api.nvim_get_namespaces()['trld']
    if namespace == nil then
@@ -49,11 +49,24 @@ end
 
 M.setup = function(cfg)
    -- override configs with user configs
-   c.override_config(cfg or {})
+   config.override_config(cfg or {})
 
-   if c.config.auto_cmds then
-      vim.cmd [[ autocmd! CursorHold,CursorHoldI * lua TRLDShow() ]]
-      vim.cmd [[ autocmd! CursorMoved,CursorMovedI * lua TRLDHide() ]]
+   if config.config.auto_cmds then
+      local au_trld = vim.api.nvim_create_augroup('trld', { clear = false })
+
+      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+         group = au_trld,
+         callback = function()
+            M.show()
+         end,
+      })
+
+      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+         group = au_trld,
+         callback = function()
+            M.hide()
+         end,
+      })
    end
 end
 
