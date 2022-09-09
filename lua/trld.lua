@@ -48,11 +48,6 @@ function TRLDHide(opts, bufnr, line_nr, client_id)
 end
 
 M.setup = function(cfg)
-   -- exit if user configs are invalid
-   if not c.validate_config(cfg) then
-      return
-   end
-
    -- override configs with user configs
    c.override_config(cfg or {})
 

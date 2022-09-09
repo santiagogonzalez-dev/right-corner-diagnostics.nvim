@@ -31,12 +31,6 @@ M.default_config = {
 -- config
 M.config = {}
 
--- return bool indicating in config is valid
-M.validate_config = function(cfg)
-   -- TODO: implement config validation with vim.notify() logging
-   return true
-end
-
 -- override the default config with user configs
 M.override_config = function(cfg)
    M.config = vim.tbl_deep_extend('force', M.default_config, cfg or {})
