@@ -10,7 +10,7 @@ top or bottom of the buffer, instead of the default virtual text at the end of
 the line.
 
 ## Preview
-![Diagnostics being displayed](https://github.com/santigo-zero/tests/blob/master/Screenshot_20220910_190828.png?raw=true "Diagnostics being display at the bottom of the screen")
+![Diagnostics being displayed](https://github.com/santigo-zero/tests/blob/master/Screenshot_20220910_190828.png?raw=true "Diagnostics being displayed at the bottom of the screen")
 
 ## Highlight groups
 In the original [trld.nvim](https://github.com/Mofiqul/trld.nvim) there was a
