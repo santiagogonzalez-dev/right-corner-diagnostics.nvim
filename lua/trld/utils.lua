@@ -2,25 +2,39 @@ local utils = {}
 
 local config = require 'trld.config'
 
--- return higlight group name from lsp diagnostic severity
-utils.get_hl_by_serverity = function(severity)
-   local severity_names = {
+-- Return higlight group name based on the lsp diagnostic severity.
+---@param level number @ For example `vim.diagnostic.severity.ERROR` returns `1`
+---@return string @ The return string is going to match with the `highlights`
+---table, for example `DiagnosticVirtualTextError`
+utils.get_hl_by_severity = function(level)
+   local highlights = {
+      error = 'DiagnosticVirtualTextError',
+      warn = 'DiagnosticVirtualTextWarn',
+      info = 'DiagnosticVirtualTextInfo',
+      hint = 'DiagnosticVirtualTextHint',
+   }
+
+   local list_severity = {
       [vim.diagnostic.severity.ERROR] = 'error',
       [vim.diagnostic.severity.WARN] = 'warn',
       [vim.diagnostic.severity.INFO] = 'info',
       [vim.diagnostic.severity.HINT] = 'hint',
    }
-   local severity_name = severity_names[severity]
-   return config.config.highlights[severity_name]
+
+   local severity = list_severity[level]
+
+   return highlights[severity]
 end
 
--- reverse a table
-utils.reverse_table = function(tbl)
-   for i = 1, math.floor(#tbl / 2) do
-      local j = #tbl - i + 1
-      tbl[i], tbl[j] = tbl[j], tbl[i]
+-- Reverse a table
+---@param T table
+---@return table @ It's the same table that we used as a param
+utils.reverse_table = function(T)
+   for i = 1, math.floor(#T / 2) do
+      local j = #T - i + 1
+      T[i], T[j] = T[j], T[i]
    end
-   return tbl
+   return T
 end
 
 -- display diagnostics

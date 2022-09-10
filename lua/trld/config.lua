@@ -4,12 +4,6 @@ local M = {}
 M.default_config = {
    position = 'top',
    auto_cmds = true,
-   highlights = {
-      error = 'DiagnosticFloatingError',
-      warn = 'DiagnosticFloatingWarn',
-      info = 'DiagnosticFloatingInfo',
-      hint = 'DiagnosticFloatingHint',
-   },
    formatter = function(diag)
       local u = require 'trld.utils'
       local diag_lines = {}
@@ -21,7 +15,7 @@ M.default_config = {
 
       local lines = {}
       for _, diag_line in ipairs(diag_lines) do
-         table.insert(lines, { { diag_line .. ' ', u.get_hl_by_serverity(diag.severity) } })
+         table.insert(lines, { { diag_line .. ' ', u.get_hl_by_severity(diag.severity) } })
       end
 
       return lines
