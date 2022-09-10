@@ -49,6 +49,7 @@ end
 M.setup = function(user_configs)
    config.merge_configs(user_configs or {})
 
+   -- Enable autocmds?
    if config.config.auto_cmds then
       local au_trld = vim.api.nvim_create_augroup('trld', { clear = false })
 

@@ -31,8 +31,10 @@ M.default_config = {
 -- config
 M.config = {}
 
-M.merge_configs = function(cfg)
-   M.config = vim.tbl_deep_extend('force', M.default_config, cfg or {})
+---@param user_configs table
+---@return nil
+M.merge_configs = function(user_configs)
+   M.config = vim.tbl_deep_extend('force', M.default_config, user_configs or {})
 end
 
 return M
