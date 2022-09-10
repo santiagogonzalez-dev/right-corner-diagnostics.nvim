@@ -1,7 +1,5 @@
 local utils = {}
 
-local config = require 'trld.config'
-
 -- Return higlight group name based on the lsp diagnostic severity.
 ---@param level number @ For example `vim.diagnostic.severity.ERROR` returns `1`
 ---@return string @ The return string is going to match with the `highlights`
@@ -28,7 +26,7 @@ end
 
 -- Reverse a table
 ---@param T table
----@return table @ It's the same table that we used as a param
+---@return table @ It's the same table that we used as a parameter but reversed
 utils.reverse_table = function(T)
    for i = 1, math.floor(#T / 2) do
       local j = #T - i + 1
@@ -41,14 +39,31 @@ end
 utils.display_diagnostics = function(diags, bufnr, ns, pos)
    local win_info = vim.fn.getwininfo(vim.fn.win_getid())[1]
 
-   -- reverse diag order if rendering on the bottom
+   local function formatter(diag)
+      local u = require 'trld.utils'
+      local diag_lines = {}
+
+      for line in diag.message:gmatch '[^\n]+' do
+         line = line:gsub('[ \t]+%f[\r\n%z]', '')
+         table.insert(diag_lines, line)
+      end
+
+      local lines = {}
+      for _, diag_line in ipairs(diag_lines) do
+         table.insert(lines, { { diag_line .. ' ', u.get_hl_by_severity(diag.severity) } })
+      end
+
+      return lines
+   end
+
+   -- Reverse the diagnostic order if rendering on the bottom.
    if pos == 'bottom' then
       diags = utils.reverse_table(diags)
    end
 
-   -- render each diag
+   -- Render each diagnostic.
    for i, diag in ipairs(diags) do
-      local msgs = config.config.formatter(diag)
+      local msgs = formatter(diag)
       for j, msg in ipairs(msgs) do
          local x = nil
          if pos == 'top' then
