@@ -40,7 +40,7 @@ utils.display_diagnostics = function(diags, bufnr, ns, pos)
    local win_info = vim.fn.getwininfo(vim.fn.win_getid())[1]
 
    local function formatter(diag)
-      local u = require 'trld.utils'
+      local u = require 'rcd.utils'
       local diag_lines = {}
 
       for line in diag.message:gmatch '[^\n]+' do
