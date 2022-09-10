@@ -32,13 +32,13 @@ end
 
 function M.hide(bufnr)
    bufnr = bufnr or 0
-   local namespace = vim.api.nvim_get_namespaces()['trld']
-   if namespace == nil then
+   local _ns_trld = vim.api.nvim_get_namespaces()['trld']
+   if _ns_trld == nil then
       return
    end
-   local ns = vim.diagnostic.get_namespace(namespace)
+   local ns = vim.diagnostic.get_namespace(_ns_trld)
    if ns.user_data.diags then
-      vim.api.nvim_buf_clear_namespace(bufnr, namespace, 0, -1)
+      vim.api.nvim_buf_clear_namespace(bufnr, _ns_trld, 0, -1)
    end
    ns.user_data.diags = false
 end
