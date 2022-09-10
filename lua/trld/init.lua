@@ -1,4 +1,3 @@
--- local config = require 'trld.config'
 local M = {}
 
 M.config = {}
@@ -18,7 +17,7 @@ function M.show(opts, bufnr, line_nr)
 
    local line_diags = vim.diagnostic.get(bufnr, opts)
 
-   -- clear and exit namespace if line has no diagnostics
+   -- Clear and exit namespace if line has no diagnostics.
    if vim.tbl_isempty(line_diags) then
       if diag_ns.user_data.diags then
          vim.api.nvim_buf_clear_namespace(bufnr, ns_trld, 0, -1)
@@ -36,6 +35,7 @@ function M.show(opts, bufnr, line_nr)
    require('trld.utils').display_diagnostics(line_diags, bufnr, ns_trld, M.config.position)
 end
 
+---@param bufnr integer|nil
 function M.hide(bufnr)
    bufnr = bufnr or 0
    local ns_trld = vim.api.nvim_get_namespaces()['trld']
@@ -51,9 +51,9 @@ function M.hide(bufnr)
    diag_ns.user_data.diags = false
 end
 
+-- Setup function
 ---@param user_config table
 M.setup = function(user_config)
-   -- config.merge_configs(user_configs or {})
    M.config = vim.tbl_deep_extend('force', M.default_config, user_config or {})
 
    -- Enable autocmds?
@@ -70,7 +70,7 @@ M.setup = function(user_config)
       vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
          group = au_trld,
          callback = function()
-            M.hide()
+            M.hide(vim.api.nvim_get_current_buf())
          end,
       })
    end
