@@ -1,7 +1,3 @@
--- A neovim plugin to display line diagnostics on corners
--- Last Change:	2022 Apr 23
--- Author:	Mofiqul Islam <mofi0islam@gmail.com>
--- Licence:	MIT
 local config = require 'trld.config'
 local utils = require 'trld.utils'
 local M = {}
