@@ -38,17 +38,17 @@ end
 
 function M.hide(bufnr)
    bufnr = bufnr or 0
-   local _ns_trld = vim.api.nvim_get_namespaces()['trld']
+   local ns_trld = vim.api.nvim_get_namespaces()['trld']
 
-   if not _ns_trld then
+   if not ns_trld then
       return
    end
 
-   local ns_trld = vim.diagnostic.get_namespace(_ns_trld)
-   if ns_trld.user_data.diags then
-      vim.api.nvim_buf_clear_namespace(bufnr, _ns_trld, 0, -1)
+   local diag_ns = vim.diagnostic.get_namespace(ns_trld)
+   if diag_ns.user_data.diags then
+      vim.api.nvim_buf_clear_namespace(bufnr, ns_trld, 0, -1)
    end
-   ns_trld.user_data.diags = false
+   diag_ns.user_data.diags = false
 end
 
 ---@param user_config table
