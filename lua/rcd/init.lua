@@ -50,7 +50,7 @@ end
 -- Setup function
 ---@param user_config table
 M.setup = function(user_config)
-   M.config = vim.tbl_deep_extend('force', M.default_config, user_config or {})
+   M.config = vim.tbl_deep_extend('keep', user_config or {}, M.default_config)
 
    -- Enable autocmds?
    if M.config.auto_cmds then
@@ -58,16 +58,12 @@ M.setup = function(user_config)
 
       vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
          group = au_rcd,
-         callback = function()
-            M.show()
-         end,
+         callback = M.show,
       })
 
       vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
          group = au_rcd,
-         callback = function()
-            M.hide()
-         end,
+         callback = M.hide,
       })
    end
 end
