@@ -72,7 +72,7 @@ utils.display_diagnostics = function(diags, bufnr, ns, pos)
                return
             end
          elseif pos == 'bottom' then
-            x = win_info.botline - (i + j)
+            x = win_info.botline - (i + j) + 1
             if win_info.topline > x then
                return
             end
