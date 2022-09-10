@@ -1,5 +1,4 @@
 local config = require 'trld.config'
-local utils = require 'trld.utils'
 local M = {}
 
 function M.show(opts, bufnr, line_nr)
@@ -27,7 +26,7 @@ function M.show(opts, bufnr, line_nr)
    diag_ns.user_data.diags = true
    diag_ns.user_data.last_line_nr = line_nr
 
-   utils.display_diagnostics(line_diags, bufnr, ns, config.config.position)
+   require('trld.utils').display_diagnostics(line_diags, bufnr, ns, config.config.position)
 end
 
 function M.hide(bufnr)
