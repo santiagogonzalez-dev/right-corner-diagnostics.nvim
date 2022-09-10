@@ -35,9 +35,7 @@ function M.show(opts, bufnr, line_nr)
    require('trld.utils').display_diagnostics(line_diags, bufnr, ns_trld, M.config.position)
 end
 
----@param bufnr integer|nil
-function M.hide(bufnr)
-   bufnr = bufnr or 0
+function M.hide()
    local ns_trld = vim.api.nvim_get_namespaces()['trld']
 
    if not ns_trld then
@@ -46,7 +44,7 @@ function M.hide(bufnr)
 
    local diag_ns = vim.diagnostic.get_namespace(ns_trld)
    if diag_ns.user_data.diags then
-      vim.api.nvim_buf_clear_namespace(bufnr, ns_trld, 0, -1)
+      vim.api.nvim_buf_clear_namespace(0, ns_trld, 0, -1)
    end
    diag_ns.user_data.diags = false
 end
@@ -70,7 +68,7 @@ M.setup = function(user_config)
       vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
          group = au_trld,
          callback = function()
-            M.hide(vim.api.nvim_get_current_buf())
+            M.hide()
          end,
       })
    end
