@@ -31,8 +31,7 @@ M.default_config = {
 -- config
 M.config = {}
 
--- override the default config with user configs
-M.override_config = function(cfg)
+M.merge_configs = function(cfg)
    M.config = vim.tbl_deep_extend('force', M.default_config, cfg or {})
 end
 

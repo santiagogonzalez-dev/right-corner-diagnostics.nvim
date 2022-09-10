@@ -44,8 +44,7 @@ function M.hide(bufnr)
 end
 
 M.setup = function(cfg)
-   -- override configs with user configs
-   config.override_config(cfg or {})
+   config.merge_configs(cfg or {})
 
    if config.config.auto_cmds then
       local au_trld = vim.api.nvim_create_augroup('trld', { clear = false })
