@@ -1,7 +1,8 @@
 # right-corner-diagnostics.nvim
 
 This plugins is a [fork](https://github.com/Mofiqul/trld.nvim) that aims to be a
-little bit simpler for the user and for whoever that wants to .
+little bit simpler for the user and to add necessary options like the
+possibility of hiding marks in insert mode.
 
 ## What does it do?
 There's various ways of viewing diagnostics in Neovim, but I really liked this
@@ -28,7 +29,19 @@ use {
   'santigo-zero/right-corner-diagnostics.nvim',
   event = 'LspAttach',
   config = function()
-    -- Default config
+    -- Recommended:
+    -- NOTE: Apply this settings before calling the `setup()`.
+    vim.diagnostic.config {
+      -- Disable default virtual text since you are using this plugin
+      -- already :)
+      virtual_text = false,
+
+      -- Do not display diagnostics while you are in insert mode, so if you have
+      -- `auto_cmds = true` it will not update the diagnostics while you type.
+      update_in_insert = false,
+    }
+
+    -- Default config:
     require('rcd').setup {
       -- Where to render the diagnostics: top or bottom, the latter sitting at
       -- the bottom line of the buffer, not of the terminal.
@@ -39,18 +52,14 @@ use {
       -- your autocmds work better than the default ones with this option:
       auto_cmds = true,
     }
-
-    -- If you don't have it in your config already you can disable the virtual
-    -- text at the end of the line with this line:
-    vim.diagnostic.config({ virtual_text = false })
   end,
 }
 ```
 
 ### Showing the diagnostics with autocommands
-If you found a better way of showing diagnostics please consider opening an
-issue, this are the defaults that are going to be used:
-
+I encourage anyone to check the setup function to see how everything works since
+it's pretty simple to understand if not the basic usage of the plugin would look
+something like this:
 ```lua
 local au_rcd = vim.api.nvim_create_augroup('right_corner_diagnostics', {})
 
