@@ -52,22 +52,25 @@ end
 M.setup = function(user_config)
    M.config = vim.tbl_deep_extend('keep', user_config or {}, M.default_config)
 
-   -- Enable autocmds?
    if M.config.auto_cmds then
       local au_rcd = vim.api.nvim_create_augroup('right_corner_diagnostics', {})
+      local show_autocmds = { 'CursorHold', 'CursorHoldI' }
+      local hide_autocmds = { 'CursorMoved', 'CursorMovedI' }
 
-      vim.api.nvim_create_autocmd({
-         'CursorHold',
-         'CursorHoldI',
-      }, {
+      if vim.diagnostic.config().update_in_insert == false then
+         table.remove(show_autocmds) -- Remove `CursorHoldI` from the table.
+         table.remove(hide_autocmds) -- Remove `CursorMovedI` from the table.
+
+         table.insert(show_autocmds, 'InsertLeave')
+         table.insert(hide_autocmds, 'InsertEnter')
+      end
+
+      vim.api.nvim_create_autocmd(show_autocmds, {
          group = au_rcd,
          callback = M.show,
       })
 
-      vim.api.nvim_create_autocmd({
-         'CursorMoved',
-         'CursorMovedI',
-      }, {
+      vim.api.nvim_create_autocmd(hide_autocmds, {
          group = au_rcd,
          callback = M.hide,
       })
