@@ -54,7 +54,7 @@ M.setup = function(user_config)
 
    if M.config.auto_cmds then
       local au_rcd = vim.api.nvim_create_augroup('right_corner_diagnostics', {})
-      local show_autocmds = { 'CursorHold', 'CursorHoldI' }
+      local show_autocmds = { 'TextChanged', 'CursorHold', 'CursorHoldI' }
       local hide_autocmds = { 'CursorMoved', 'CursorMovedI' }
 
       if vim.diagnostic.config().update_in_insert == false then
@@ -67,7 +67,11 @@ M.setup = function(user_config)
 
       vim.api.nvim_create_autocmd(show_autocmds, {
          group = au_rcd,
-         callback = M.show,
+         callback = function()
+            vim.defer_fn(function()
+               M.show()
+            end, 100)
+         end,
       })
 
       vim.api.nvim_create_autocmd(hide_autocmds, {
